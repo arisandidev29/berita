@@ -9,3 +9,19 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* daisy */
+
+@plugin 'daisyui';
+
+
+input {
+    @apply w-full;
+}
+
+@theme {
+    --color-main-primary : #296374;
+    --color-main-dark-primary : #0C2C55;
+    --color-main-light-primary : #629FAD;
+    --color-main-secondary : #EDEDCE;
+}
