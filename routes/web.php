@@ -7,3 +7,5 @@ Route::get('/', function () {
 });
 
 Route::livewire('/login',"pages::login");
+
+Route::livewire("/pegawai/homepage","pages::pegawai.homepage");
