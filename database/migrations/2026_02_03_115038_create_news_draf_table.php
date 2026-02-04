@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('tokoh');
             $table->string('peristiwa');
             $table->string('lokasi');
-            $table->date('waktu');
-            $table->string('kronogi');
-            $table->text('content_berita');
-            $table->text('data_pendukung');
+            $table->date('waktu')->useCurrent();
+            $table->string('kronologi');
+            $table->text('content_berita')->nullable(true);
+            $table->text('data_pendukung')->nullable(true);
             $table->enum('status', ["panding","generate","publish"]);
-            $table->text('image');
+            $table->text('image')->nullable(true);
             $table->timestamps();
         });
 

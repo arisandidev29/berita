@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('news_draf_id')->unique();
             $table->foreign('news_draf_id')->references('user_id')->on('news_draf')->cascadeOnDelete();
-            $table->string('tone_style');
-            $table->string('prompt_mode');
-            $table->text('custom_prompt_text');
+            $table->string('tone_style')->default("formal");
+            $table->string('prompt_mode')->default("default");
+            $table->text('custom_prompt_text')->nullable(true);
             $table->boolean('strict_fact_mode')->default(true);
+            $table->timestamps();
             
         });
 
