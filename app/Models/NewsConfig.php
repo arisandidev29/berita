@@ -17,9 +17,18 @@ class NewsConfig extends Model
         "strict_fact_mode"
     ];
 
+    protected function casts() {
+        return [
+            "strict_fact_mode" => "boolean"
+        ];
+    }
+
     public function newsDraf():BelongsTo {
         return $this->belongsTo(NewsDraf::class,"news_draf_id","id");
     }
+
+
+    
 
 
 }

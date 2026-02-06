@@ -15,11 +15,15 @@ class newsConfigSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where("nip","12345678")->get()->first();
-        $newsdraft = NewsDraf::where("user_id",$user->id)->first();
+        $user = User::where("nip","123456789")->get()->first();
 
-        NewsConfig::create([
-            "news_draf_id" => $newsdraft->id
-        ]);
+        $news = $user->newsDraft;
+
+
+        foreach($news as $item) {
+            NewsConfig::create([
+                "news_draf_id" => $item->id
+            ]);
+        }
     }
 }

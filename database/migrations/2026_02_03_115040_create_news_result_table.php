@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->timestamps();
 
-            $table->foreign("news_draft_id")->references("id")->on("news_draft")->cascadeOnDelete();
+            $table->foreign("news_draft_id")->references("id")->on("news_draf")->cascadeOnDelete();
         });
 
         Schema::enableForeignKeyConstraints();

@@ -14,10 +14,10 @@ class PegawaiSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where("nip","12345678")->get()->first();
+        $user = User::where("nip","123456789")->get()->first();
 
         Pegawai::create([
-            "nama" => "arisandi kader",
+            "nama" => "arisandi ",
             "jabatan" => "anak magang",
             "user_id" => $user->id
         ]);

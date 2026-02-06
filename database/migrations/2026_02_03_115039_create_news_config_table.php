@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('news_config', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('news_draf_id')->unique();
-            $table->foreign('news_draf_id')->references('user_id')->on('news_draf')->cascadeOnDelete();
+            $table->foreign('news_draf_id')->references('id')->on('news_draf')->cascadeOnDelete();
             $table->string('tone_style')->default("formal");
             $table->string('prompt_mode')->default("default");
             $table->text('custom_prompt_text')->nullable(true);

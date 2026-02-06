@@ -33,6 +33,6 @@ class NewsDraf extends Model
     }
 
     public function newsResult():HasOne {
-        return $this->hasOne(NewsResult::class,"news_draf_id","id");
+        return $this->hasOne(NewsResult::class,"news_draft_id","id");
     }
 }

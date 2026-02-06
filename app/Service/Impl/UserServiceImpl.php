@@ -10,7 +10,6 @@ class UserServiceImpl implements UserService {
        return User::create([
         "nip" => $data["nip"],
         "name" => $data["name"],
-        "jabatan" => $data["jabatan"],
         "role" => $data["role"],
         "password" => Hash::make($data["password"]),
        ]);
