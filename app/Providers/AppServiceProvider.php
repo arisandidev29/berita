@@ -10,8 +10,13 @@ use App\Service\Impl\NewsDrafService;
 use App\Service\Impl\NewsGenerator;
 use App\Service\Impl\NewsResultService;
 use Database\Seeders\newsDrafSeeder;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use ImageKit\ImageKit;
+use League\Flysystem\Filesystem;
+use TaffoVelikoff\ImageKitAdapter\ImagekitAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,10 +38,7 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(AiService::class,GeminiService::class);
-
-
-
+        $this->app->singleton(AiService::class, GeminiService::class);
     }
 
     /**
@@ -44,6 +46,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
+        // custome filesystem image kit
+        Storage::extend('imagekit', function ($app, $config) {
+            $adapter = new ImagekitAdapter(
+
+                new ImageKit(
+                    $config['public_key'],
+                    $config['private_key'],
+                    $config['endpoint_url']
+                ),
+
+                $options = [ // Optional
+                    'purge_cache_update'    => [
+                        'enabled'       => true,
+                        'endpoint_url'  => 'your_endpoint_url'
+                    ]
+                ]
+
+            );
+
+            return new FilesystemAdapter(
+                new Filesystem($adapter, $config),
+                $adapter,
+                $config
+            );
+        });
     }
 }

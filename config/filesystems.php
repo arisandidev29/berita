@@ -41,7 +41,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -59,6 +59,17 @@ return [
             'throw' => false,
             'report' => false,
         ],
+
+        // imagekit filesystem
+
+        'imagekit' => [
+            'driver' => 'imagekit',
+            'public_key' => env('IMAGEKIT_PUBLIC_KEY'),
+            'private_key' => env('IMAGEKIT_PRIVATE_KEY'),
+            'endpoint_url' => env('IMAGEKIT_ENDPOINT_URL')
+        ],
+
+
 
     ],
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nip')->unique();
             $table->string('password');
             $table->string("role")->nullable(false);
+            $table->text("profile_pic")->nullable(true);
             $table->rememberToken();
             $table->timestamps();
         });
