@@ -1,4 +1,8 @@
-@import 'tailwindcss';
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'); */
+
+@import url("https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,22 +10,72 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-primary: "SN Pro", sans-serif;
+    --color-main-primary: #296374;
+    --color-main-dark-primary: #0c2c55;
+    --color-main-light-primary: #629fad;
+    --color-main-secondary: #ededce;
+}
+
+@layer base {
+    html {
+        font-family: var(--font-primary);
+    }
 }
 
 /* daisy */
 
 @plugin 'daisyui';
 
+@layer components {
+    .container-max {
+        @apply max-w-[1200px] lg:mx-auto lg:w-[80%] mx-4;
+    }
+}
 
-input {
+input[type="text"],
+input[type="password"],
+textarea {
     @apply w-full;
 }
 
-@theme {
-    --color-main-primary : #296374;
-    --color-main-dark-primary : #0C2C55;
-    --color-main-light-primary : #629FAD;
-    --color-main-secondary : #EDEDCE;
+/* loading save draft */
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    height: 60px;
+    aspect-ratio: 2;
+    border-bottom: 3px solid #0000;
+    background: linear-gradient(90deg, #524656 50%, #0000 0) -25% 100%/50% 3px
+        repeat-x border-box;
+    position: relative;
+    animation: l3-0 0.75s linear infinite;
+}
+.loader:before {
+    content: "";
+    position: absolute;
+    inset: auto 42.5% 0;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--color-main-primary);
+    animation: l3-1 0.75s cubic-bezier(0, 900, 1, 900) infinite;
+}
+@keyframes l3-0 {
+    to {
+        background-position: -125% 100%;
+    }
+}
+@keyframes l3-1 {
+    0%,
+    2% {
+        bottom: 0%;
+    }
+    98%,
+    to {
+        bottom: 0.1%;
+    }
 }

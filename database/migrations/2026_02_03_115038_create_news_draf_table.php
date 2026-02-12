@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('title');
             $table->string('tokoh');
-            $table->string('peristiwa');
             $table->string('lokasi');
             $table->date('waktu')->useCurrent();
             $table->string('kronologi');

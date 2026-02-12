@@ -13,13 +13,13 @@ interface ImageService {
 
     function getProfile($user);
 
-    function uploadImageNews($image,$newsDraft);
+    function uploadImageNews($image,$newsDraft, $user);
 
-    function deleteImageNews($newsDraft);
+    // function deleteImageNews($newsDraft);
 
-    function changeImageNews($image,$newsDraft);
+    // function changeImageNews($image,$newsDraft);
     
-    function getImageNews($newsDraft);
+    // function getImageNews($newsDraft);
 
 }
 

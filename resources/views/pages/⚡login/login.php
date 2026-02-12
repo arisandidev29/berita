@@ -24,7 +24,17 @@ new class extends Component
        ])) {
         $request->session()->regenerate();
 
-        dd(Auth::user());
+        $user = auth()->user();
+
+        if($user->role == "admin") {
+            return redirect()->intended("/admin");
+        }
+
+        if($user->role == "pegawai") {
+            return redirect()->intended("/pegawai/homepage");
+        }
+
+
        }
 
        return back()->with('errors',"Username Atau Password Salah");

@@ -43,6 +43,18 @@ class ImageKitService implements ImageService {
         return Storage::disk("imagekit")->url($user->profile_pic);
     }
 
+    public function uploadImageNews($image, $newsDraft, $user)
+    {
+       $user_nip = $user->nip; 
+       $news_id = $newsDraft->id;
+       $path = "user/" . $user_nip . "/" . "news_$news_id";
+
+       $pathImage = Storage::disk("imagekit")->putFile($path,$image);
+
+       return Storage::disk("imagekit")->url($pathImage);
+
+    }
+
 
 
 }

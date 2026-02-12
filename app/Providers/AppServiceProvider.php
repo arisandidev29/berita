@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\NewsDraf;
 use App\Models\NewsResult;
+use App\Policies\NewsDraftPolicy;
 use App\Service\AiService;
+use App\Service\ImageService;
 use App\Service\Impl\GeminiService;
+use App\Service\Impl\ImageKitService;
 use App\Service\Impl\NewsConfigService;
 use App\Service\Impl\NewsDrafService;
 use App\Service\Impl\NewsGenerator;
@@ -12,6 +16,7 @@ use App\Service\Impl\NewsResultService;
 use Database\Seeders\newsDrafSeeder;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use ImageKit\ImageKit;
@@ -26,7 +31,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(NewsConfigService::class, fn() => new NewsConfigService());
-        $this->app->singleton(NewsDrafService::class, fn() => new NewsDrafService());
+        $this->app->singleton(NewsDrafService::class, function($app){ 
+            return new NewsDrafService($app->make(ImageService::class));
+        });
         $this->app->singleton(NewsResultService::class, fn() => new NewsResultService());
 
         $this->app->singleton(NewsGenerator::class, function (Application $app) {
@@ -39,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(AiService::class, GeminiService::class);
+        $this->app->singleton(ImageService::class,ImageKitService::class);
     }
 
     /**
@@ -72,5 +80,8 @@ class AppServiceProvider extends ServiceProvider
                 $config
             );
         });
+
+        Gate::policy(NewsDraf::class, NewsDraftPolicy::class);
     }
+
 }
