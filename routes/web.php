@@ -17,6 +17,10 @@ Route::prefix("/pegawai")
 
             Route::livewire("/homepage","pages::pegawai.homepage")->name("pegawai.homepage");
     
-            Route::livewire("/draft","pages::pegawai.draft")->name("pegawai.draft");
-            Route::livewire("/create/draft","pages::pegawai.create.draft")->name("create.draft");
+            // draft route
+            Route::livewire("/draft","pages::pegawai.draft.draft")->name("pegawai.draft");
+            Route::livewire("/draft/detail/{draft}","pages::pegawai.draft.detail")->name("pegawai.draft.detail");
+            Route::livewire("/create/draft","pages::pegawai.draft.create")->name("create.draft");
+            Route::livewire("/edit/draft/{draft}","pages::pegawai.draft.update")->name("update.draft");
+
 });

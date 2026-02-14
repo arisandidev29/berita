@@ -33,7 +33,7 @@
         <ul class="grid gap-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 my-3">
             @forelse ($drafts as $draft)
                 <li wire:key='{{ $draft->id }}'>
-                    <div class="border-1 border-neutral-300 rounded-xl p-4">
+                    <div class="border-1 border-neutral-300 rounded-xl p-4 overflow-hidden">
                         <div class="group overflow-hidden">
 
                             @if ($draft->image)
@@ -48,11 +48,8 @@
 
                         <div class="mt-2 flex gap-2 items-center">
 
-                            <p class="text-xs bg-red-500 text-white px-2 py-1 rounded-lg flex gap-1">
-                                <x-heroicon-c-document-chart-bar class="w-3 text-inherit" />
+                            <x-draft-badge :text="$draft->status" />
 
-                                Draft
-                            </p>
 
                             <p class="text-xs font-medium text-neutral-500 flex gap-1">
                                 Di buat : {{ $draft->created_at }}
@@ -85,13 +82,19 @@
 
                             </div>
                             <div class="flex gap-2 items-center mt-3">
-                                <button class="btn bg-main-primary hover:bg-main-dark-primary text-white ">Detail
-                                    >></button>
+                                <a wire:navigate href="{{ route("pegawai.draft.detail", $draft) }}">
+                                    <button class="btn bg-main-primary hover:bg-main-dark-primary text-white ">Detail
+                                        >></button>
 
-                                <button class="btn bg-amber-500  hover:bg-amber-700 text-white  flex gap-2">
-                                    Edit
-                                    <x-heroicon-o-pencil class="w-4 text-inherit" />
-                                </button>
+                                </a>
+
+                                <a wire:navigate href="{{ route("update.draft", $draft) }}">
+                                    <button class="btn bg-amber-500  hover:bg-amber-700 text-white  flex gap-2">
+                                        Edit
+                                        <x-heroicon-o-pencil class="w-4 text-inherit" />
+                                    </button>
+                                </a>
+                                    
                                 <button @click="$dispatch('showalertwarning',{'id' : {{ $draft->id }}})"
                                     class="btn bg-red-500 hover:bg-red-600 text-white">
                                     Delete

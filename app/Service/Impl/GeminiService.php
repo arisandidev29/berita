@@ -14,6 +14,11 @@ class GeminiService implements AiService {
 
         return $generated->content();
     }
+
+    public function generateFaker($prompt,$model = "default") {
+        $generate = fake()->paragraph(10);
+        return $generate;
+    }
         
 }
 

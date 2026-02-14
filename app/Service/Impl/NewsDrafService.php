@@ -16,7 +16,7 @@ class NewsDrafService
         $this->imageService = $imageService;
     }
 
-    public function create(array $data, UploadedFile $image, User $user)
+    public function create(array $data, ?UploadedFile $image, User $user)
     {
         $news = $user->newsDraft()->create($data);
         if ($image) {
@@ -26,13 +26,24 @@ class NewsDrafService
         }
         return $news;
     }
-
-    public function update(array $data, $id, User $user)
+    
+    public function update(array $data, $draft ,?UploadedFile $image, User $user)
     {
-        $news = $user->newsDraft()->findOrFail($id);
-        $news->update($data);
+        $draft->update($data);
+        // dd(strtok($draft->image,'?'));
 
-        return $news;
+        if($draft->image) {
+            $this->imageService->deleteImageNews(strtok($draft->image,"?"));
+        }
+
+        if ($image) {
+            $path =  $this->imageService->uploadImageNews($image, $draft, $user);
+            $draft->image = $path;
+            $draft->save();
+        }
+
+
+        return $draft;
     }
 
     public function delete($id, User $user)

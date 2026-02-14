@@ -2,6 +2,7 @@
 
 use App\Service\Impl\NewsConfigService;
 use App\Service\Impl\NewsDrafService;
+use App\Service\Impl\NewsGenerator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Sleep;
 use Livewire\Attributes\Validate;
@@ -49,13 +50,34 @@ new class extends Component
     public $prompt_mode = "default";
 
     #[Validate('nullable')]
-    public $stric_fact_mode = true;
+    public $strict_fact_mode = true;
 
 
     public function save(NewsDrafService $newsDrafService, NewsConfigService $newsConfigService) {
         $data = $this->validate();
+        
+        $this->saveNewsDraft($newsDrafService, $newsConfigService , $data);
+        
+        $this->dispatch("success-create-draft");
+    }
+    
+    
+    public function generate(NewsDrafService $newsDrafService, NewsConfigService $newsConfigService, NewsGenerator $newsGenerator) {
+        $data = $this->validate();
+        $draft = $this->saveNewsDraft($newsDrafService, $newsConfigService , $data);
 
         
+        $newsGenerator->generateNews($draft,Auth::user());
+        $this->dispatch("success-create-news");
+
+
+
+
+    }
+    
+    
+    public function saveNewsDraft(NewsDrafService $newsDrafService, NewsConfigService $newsConfigService, Array $data) {
+
         $draft = array_slice($data,0,7);
         $config = array_slice($data,7,4);
         
@@ -63,12 +85,9 @@ new class extends Component
         $user = Auth::user();
         $newsDraft = $newsDrafService->create($draft,$data['image'],$user);
         $newsConfigService->create($config,$newsDraft);
-        
-        $this->dispatch("success-create-draft");
-    }
 
-    public function generate() {
-        Sleep::for(2)->seconds();
+        return $newsDraft;
+
     }
 
 

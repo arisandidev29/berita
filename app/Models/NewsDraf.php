@@ -24,6 +24,10 @@ class NewsDraf extends Model
         "image"
     ];
 
+    protected $attributes = [
+        "status" => "draft"
+    ];
+
     public function user():BelongsTo {
         return $this->belongsTo(User::class);
     }

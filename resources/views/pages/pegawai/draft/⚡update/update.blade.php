@@ -2,15 +2,11 @@
     <x-user.navbar />
 
     <div class="container-max my-6">
-        <h2 class="text-2xl text-main-primary ">Buat Draft Berita</h2>
+        <h2 class="text-2xl text-main-primary ">Edit Draft Berita</h2>
 
 
-        <div
-         x-data="{show : false}"
-         x-cloak
-         x-show="show"
-         @success-create-draft.window="show = true"
-         role="alert" class="alert alert-success my-4">
+        <div x-data="{ show: false }" x-cloak x-show="show" @success-create-draft.window="show = true" role="alert"
+            class="alert alert-success my-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -19,63 +15,47 @@
             <span>Berhasil Buat Draft</span>
         </div>
 
+        <div x-data="{ show: false }" x-cloak x-show="show" @success-update-news.window="show = true" role="alert"
+            class="alert alert-success my-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Berhasil Edit Berita</span>
+        </div>
 
         <div class="my-4 grid lg:grid-cols-4 md:grid-cols-1 gap-3">
 
             <div class="lg:col-start-1 lg:col-span-3 grid grid-cols-2 gap-3">
 
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Title</legend>
-                    <input wire:model='title' type="text" class="input" placeholder="tulis title" />
-                    @error('title')
-                        <p class="label text-red-500">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+                <x-input-form wire:model='title' error="title" label="tokoh" type="text" class="input"
+                    name="title" placeholder="tulis title"  />
 
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Tokoh</legend>
-                    <input wire:model='tokoh' type="text" class="input" placeholder="tokoh" />
-                    @error('tokoh')
-                        <p class="label text-red-500">{{ $message }}</p>
-                    @enderror
-                </fieldset>
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Waktu</legend>
-                    <input wire:model='waktu' type="date" class="input w-full" placeholder="Type here" />
-                    @error('waktu')
-                        <p class="label text-red-500">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+                <x-input-form wire:model='tokoh' type="text" error="tokoh" label="tokoh" placeholder="tokoh" name="tokoh"
+                     />
 
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Lokasi</legend>
-                    <input wire:model='lokasi' type="text" class="input" placeholder="lokasi" />
-                    @error('lokasi')
-                        <p class="label text-red-500">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+                <x-input-form wire:model='waktu' type="date" error="waktu" label="waktu" placeholder="waktu" name="waktu"
+                    value="{{ old('waktu', $draft->waktu) }}" />
 
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Kronologi</legend>
-                    <textarea wire:model='kronologi' class="textarea h-24" placeholder="kronologi"></textarea>
-                    @error('kronologi')
-                        <p class="label text-red-500">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+                <x-input-form wire:model='lokasi' type="text" error="lokasi" label="lokasi" placeholder="lokasi" name="lokasi"
+                    value="{{ old('lokasi', $draft->lokasi) }}" />
 
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Kontent Berita</legend>
-                    <textarea wire:model='content_berita' class="textarea h-24" placeholder="kontent berita"></textarea>
-                    @error('content_berita')
-                        <p class="label text-red-500">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+
+                <x-textarea-form wire:model='kronologi' error="kronologi" label="kronologi" name="kronologi"  >
+                    {{ old("kronologi",$draft->kronologi) }}
+                </x-textarea-form>
+
+                <x-textarea-form wire:model='content_berita' error="content_berita" label="Kontent Berita" name="content_berita"  >
+                    {{ old("conotent_berita",$draft->content_berita) }}
+                </x-textarea-form>
+
             </div>
 
-            <fieldset class="fieldset " x-data="{ imageUrl: null }">
+            <fieldset class="fieldset " x-data="{ imageUrl: '{{ $existImage ?? '' }}' }">
                 <legend class="fieldset-legend">Pilih file gambar</legend>
 
-                <input wire:model='image' type="file" class="file-input" accept="image/*"
+                <input wire:model='image' type="file" class="file-input" " accept="image/*"
                     @change="
             const file = $event.target.files[0];
             if (file) {
@@ -91,7 +71,7 @@
                         <img :src="imageUrl" class="rounded-lg max-w-xs shadow-md border" />
 
                         <button type="button"
-                            @click="imageUrl = null; $el.closest('fieldset').querySelector('input').value = ''"
+                            @click="imageUrl = null; $el.closest('fieldset').querySelector('input').value = ''; $wire.image = null"
                             class="btn btn-xs btn-error mt-2">
                             Hapus
                         </button>
@@ -107,7 +87,7 @@
 
             </fieldset>
 
-            <div x-data="{ customePrompt: false }" tabindex="0"
+            <div x-data="{ customePrompt: '{{ $custom_prompt_text ? true : false }}' }" tabindex="0"
                 class="collapse col-span-4 mt-4 collapse-arrow bg-base-100 border-base-300 border">
                 <div class="collapse-title font-semibold">Tingkat Lanjut</div>
                 <div class="collapse-content text-sm ">
@@ -132,7 +112,7 @@
                         <fieldset class="fieldset bg-base-100 border-base-300 rounded-box w-full border p-4 ">
                             <legend class="fieldset-legend">Mode Fakta</legend>
                             <label class="label">
-                                <input wire:model='stric_fact_mode' type="checkbox" checked="checked"
+                                <input wire:model='strict_fact_mode' type="checkbox" checked="checked"
                                     class="checkbox" />
                                 Output yang di hasilkan harus sesuai fakta
                             </label>
@@ -141,7 +121,8 @@
                         <fieldset class="fieldset w-full col-span-2">
                             <legend class="fieldset-legend">Prompt Mode </legend>
                             <select wire:model='prompt_mode' class="select w-full">
-                                <option @click="customePrompt = false; $wire.custome_prompt_text = null" selected>Default</option>
+                                <option @click="customePrompt = false; $wire.custome_prompt_text = null" selected>
+                                    Default</option>
                                 <option @click="customePrompt = true">Custome</option>
                             </select>
                             <span class="label   break-all w-32  "></span>
@@ -150,7 +131,8 @@
 
                         <fieldset class="fieldset col-span-2">
                             <legend class="fieldset-legend">Custome Prompt</legend>
-                            <textarea wire:model='custom_prompt_text' :disabled="!customePrompt" class="textarea h-24" placeholder="Custome Prompt"></textarea>
+                            <textarea wire:model='custom_prompt_text' :disabled="!customePrompt" class="textarea h-24"
+                                placeholder="Custome Prompt"></textarea>
                             <p>Fitur ini akan aktif jika memilih mode prompt pada custome prompt, buat prompt dengan
                                 hati hati atau output yang di hasilkan tidak sesuai </p>
                             @error('custome_prompt')
@@ -165,30 +147,48 @@
 
 
             <div class="flex gap-4">
-                <button wire:click='save' class="btn bg-main-light-primary text-white">Simpan Draft</button>
-                <button wire:click='generate' class="btn bg-blue-500 text-white">
+                <button wire:click='update' class="btn bg-main-light-primary text-white">Update Draft</button>
+                <button @click="$dispatch('showalertgenerate')" class="btn bg-blue-500 text-white">
                     Simpan dan Generate
                     <x-ri-ai-generate-2 class="w-4 text-inherit" />
                 </button>
-                {{-- @if ($errors->any())
-                    @php
-                        dump($errors->all());
-                    @endphp --}}
-                {{-- @endif) --}}
             </div>
 
-            <div 
-                wire:loading 
-                wire:target='save'
+
+            {{-- alert generate --}}
+
+            <x-alert x-data="{ show: false, }" x-cloak x-show="show"
+                @showalertgenerate.window="draftId = $event.detail.id;  show = true; "
+                @closealertgenerate.window="show = false" x-transition>
+                <x-heroicon-o-information-circle class="w-23 stroke-main-primary" />
+                <p class="text-xl text-neutral-900">Apakah kamu yakin generate berita ini ?</p>
+                <small class="text-sm text-neutral-600">Tindakan ini akan membuat berita </small>
+                <div class="flex gap-4 justify-center mt-4">
+                    <button @click="show = false" class="btn border-1 border-neutral-500 ">Tidak</button>
+                    <button wire:click="generate" class="btn bg-main-primary text-white">Ya, Generate</button>
+                </div>
+            </x-alert>
+
+
+            {{-- loading draft --}}
+            <div wire:loading wire:target='update'
                 class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
                 <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
-                    <div class="loader"></div> 
-                    <p class="text-sm mt-2">Menyimpan Dratf ...</p>
+                    <div class="loader"></div>
+                    <p class="text-sm mt-2">Mengupdate Dratf ...</p>
                 </div>
 
             </div>
 
-            <div wire:loading wire:targer='generate'>loading genarete</div>
+            <div wire:loading wire:target='generate'
+                class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
+                <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
+                    <div class="loader"></div>
+                    <p class="text-sm mt-2">membuat berita ...</p>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>

@@ -51,8 +51,22 @@ class ImageKitService implements ImageService {
 
        $pathImage = Storage::disk("imagekit")->putFile($path,$image);
 
-       return Storage::disk("imagekit")->url($pathImage);
+       $url =  Storage::disk("imagekit")->url($pathImage);
 
+       $optimizeQuery = "&tr=q-60,f-auto";    
+
+       return $url . $optimizeQuery;
+
+    }
+
+    public function deleteImageNews($imageUrl) {
+        $path = parse_url($imageUrl,PHP_URL_PATH);
+
+        $cleanPath = str_replace('/siSpkarisandi/','',$path);
+
+        $image = Storage::disk("imagekit")->delete($cleanPath);
+
+        return $image;
     }
 
 

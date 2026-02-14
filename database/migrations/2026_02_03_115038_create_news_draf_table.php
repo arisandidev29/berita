@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('kronologi');
             $table->text('content_berita')->nullable(true);
             $table->text('data_pendukung')->nullable(true);
-            $table->enum('status', ["panding","generate","publish"]);
+            $table->enum('status', ["draft","generated","publish"])->default("draft");
             $table->text('image')->nullable(true);
             $table->timestamps();
         });

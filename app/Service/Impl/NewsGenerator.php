@@ -2,6 +2,7 @@
 
 namespace App\Service\Impl;
 
+use App\Models\NewsDraf;
 use App\Models\User;
 use App\Service\AiService;
 
@@ -16,10 +17,7 @@ class NewsGenerator
 
     ) {}
 
-    public function generateNews($draf_id, User $user) {
-            $draft = $this->newsDrafService->getById($draf_id,$user);            
-
-            $draftConfig = $this->newsConfigService->getDraf($draft);
+    public function generateNews(NewsDraf $draft, User $user) {
 
             $faktaRaw = "
             title : {$draft->title}, 
@@ -33,9 +31,9 @@ class NewsGenerator
             ";
 
             $instruksiRaw = "
-             tone : {$draftConfig->tone_style},
-             prompt_mode : {$draftConfig->prompt_mode},             
-             strict_fact_mode : {$draftConfig->strict_fact_mode},             
+             tone : {$draft->newsDrafConfig->tone_style},
+             prompt_mode : {$draft->newsDrafConfig->prompt_mode},             
+             strict_fact_mode : {$draft->newsDrafConfig->strict_fact_mode},             
             ";
 
             $fakta = $this->cleanLinePrompt($faktaRaw);
@@ -51,12 +49,20 @@ class NewsGenerator
                 akting sebagai tulis berita dengan custome prompt : {$draft['custome_prompt_text']}, dengan fakta $fakta, dan instruksi $instruksi tulis sesuai instruksi
             ";
 
-            $generatedContent = $this->aiService->generate($draft["custome_prompt_text"] ? $prompt : $customePrompt);
+            $generatedContent = $this->aiService->generateFaker($draft["custome_prompt_text"] ? $prompt : $customePrompt);
 
 
-            $this->newsResultService->create([
+            $result = $this->newsResultService->create([
                 "content_generated" => $generatedContent
             ], $draft);
+
+            if($result) {
+                $draft->status = "generated";
+                $draft->save();
+                dd($draft);
+            }
+
+            return $result;
 
             
 

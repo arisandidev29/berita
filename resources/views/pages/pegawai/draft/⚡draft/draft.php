@@ -13,6 +13,7 @@ new class extends Component
 
     public function mount(NewsDrafService $draftService) {
         $this->drafts = $draftService->getAll(auth()->user());
+        // dd($this->drafts);
     }
     
     

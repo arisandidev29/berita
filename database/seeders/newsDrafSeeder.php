@@ -22,7 +22,6 @@ class newsDrafSeeder extends Seeder
             "tokoh" => "pimpinan bpmp santoso, walikota tidore",
             "lokasi" => "bpmp malut",
             "Kronologi" => "pembukaan acara mtq di bpmp maluku utara",
-            "status" => "panding"
         ]); 
         
         $count = 5;
@@ -34,7 +33,6 @@ class newsDrafSeeder extends Seeder
                 "tokoh" => fake()->words(5,true),
                 "lokasi" => fake()->words(2,true),
                 "Kronologi" => fake()->paragraph(2),
-                "status" => "panding"
             ]); 
         }
     }
