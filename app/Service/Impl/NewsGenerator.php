@@ -5,6 +5,7 @@ namespace App\Service\Impl;
 use App\Models\NewsDraf;
 use App\Models\User;
 use App\Service\AiService;
+use Illuminate\Support\Str;
 
 class NewsGenerator
 {
@@ -41,7 +42,7 @@ class NewsGenerator
 
             $prompt = "
                 akting sebagain penulis berita profesional, tugas kamu adalah menulis berita dari fakta berikut : 
-                $fakta, dengan instruksi $instruksi, tulis berita yang menarik akurat dan sesuai dengan instruksi
+                $fakta, dengan instruksi $instruksi, tulis berita yang menarik akurat dan sesuai dengan instruksi, tulis berita sebagai format markdown 
             ";
 
 
@@ -49,17 +50,16 @@ class NewsGenerator
                 akting sebagai tulis berita dengan custome prompt : {$draft['custome_prompt_text']}, dengan fakta $fakta, dan instruksi $instruksi tulis sesuai instruksi
             ";
 
-            $generatedContent = $this->aiService->generateFaker($draft["custome_prompt_text"] ? $prompt : $customePrompt);
+            $generatedContent = $this->aiService->generate($draft["custome_prompt_text"] ? $prompt : $customePrompt);
 
 
             $result = $this->newsResultService->create([
-                "content_generated" => $generatedContent
+                "content_generated" => Str::markdown($generatedContent)
             ], $draft);
 
             if($result) {
                 $draft->status = "generated";
                 $draft->save();
-                dd($draft);
             }
 
             return $result;

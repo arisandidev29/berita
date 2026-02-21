@@ -1,0 +1,1 @@
+import Trix from 'trix';

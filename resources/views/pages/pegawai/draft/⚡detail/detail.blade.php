@@ -1,6 +1,13 @@
 <div>
     <x-user.navbar />
 
+    @push('script')
+        {{-- @vite("resources/js/trix.js")  --}}
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+        <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    @endpush
+
+
     <div class="container-max mt-4">
         {{-- breadcrumb --}}
         <div class="breadcrumbs text-md my-4">
@@ -11,10 +18,38 @@
             </ul>
         </div>
 
+
+
+        {{-- toast success edit --}}
+        <div x-data="{ show: false }" x-show="show" x-cloak x-init="$watch('show', () => {
+            setTimeout(() => {
+                show = false
+            }, 9000)
+        })"
+            @enable-success-edit-news.window="show = true" @disable-success-edit-news.window="show = false"
+            class="toast toast-top toast-end top-20 z-[1000]">
+            <div class="alert alert-success text-white text-md flex gap-1 items-center">
+                <x-heroicon-m-check-circle class="w-6" />
+                <span>Berhasil Edit Berita</span>
+            </div>
+        </div>
+
+
+        {{-- show berita --}}
+        @if ($newsDraft->status == 'generated')
+            <livewire:show-news :draft="$newsDraft" />  
+        @endif
+
+
+
+
+
+        {{-- draft --}}
         <div class="min-h-64 shadow-main-primary shadow-md rounded-2xl p-10 flex gap-6">
             <div class="w-[40%] ">
                 @if ($newsDraft->image)
-                    <img class="aspect-square object-cover w-full rounded-lg" src="{{ $newsDraft->image }}" alt="image">
+                    <img class="aspect-square object-cover w-full rounded-lg" src="{{ $newsDraft->image }}"
+                        alt="image">
                 @else
                     <div
                         class="w-full aspect-square object-cover rounded-lg grid place-content-center text-2xl bg-neutral-900 text-white">
@@ -56,11 +91,14 @@
                             <x-heroicon-o-pencil class="w-5 text-inherit" />
                         </button>
                     </a>
-                    
-                    <button class="btn bg-blue-500 text-white flex gap-2">
+
+                    <button @disabled($newsDraft->status == 'generated') @click="$dispatch('showalertgenerate')"
+                        class="btn bg-blue-500 text-white flex gap-2 {{ $newsDraft->status == 'generated' ? 'cursor-not-allowed! bg-blue-200!' : '' }}">
                         Generate
                         <x-ri-ai-generate-2 class="w-5 text-inherit" />
                     </button>
+
+
                     <button class="btn bg-main-primary text-white flex gap-2">
                         Publish
                         <x-heroicon-o-globe-alt class="w-5 text-inherit" />
@@ -109,6 +147,37 @@
 
 
 
+
         </div>
+
+    </div>
+
+    {{-- alert generate --}}
+    <x-alert x-data="{ show: false, }" x-cloak x-show="show"
+        @showalertgenerate.window="draftId = $event.detail.id;  show = true; " @closealertgenerate.window="show = false"
+        x-transition>
+        <x-heroicon-o-information-circle class="w-23 stroke-main-primary" />
+        <p class="text-xl text-neutral-900">Apakah kamu yakin generate berita ini ?</p>
+        <small class="text-sm text-neutral-600">Tindakan ini akan membuat berita </small>
+        <div class="flex gap-4 justify-center mt-4">
+            <button @click="show = false" class="btn border-1 border-neutral-500 ">Tidak</button>
+            <button wire:click="generate" class="btn bg-main-primary text-white">Ya, Generate</button>
+        </div>
+    </x-alert>
+
+
+    {{-- alert generate --}}
+
+    <div wire:loading wire:target='generate'
+        class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
+        <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
+            <div class="loader"></div>
+            <p class="text-sm mt-2">Membuat berita ...</p>
+        </div>
+
+
+    </div>
+
+
     </div>
 </div>

@@ -30,6 +30,7 @@
 /* daisy */
 
 @plugin 'daisyui';
+ @plugin "@tailwindcss/typography";
 
 @layer components {
     .container-max {

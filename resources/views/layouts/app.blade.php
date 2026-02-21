@@ -7,12 +7,14 @@
         <title>{{ $title ?? config('app.name') }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack("script")
 
+        
         @livewireStyles
     </head>
     <body>
         {{ $slot }}
-
+        
         @livewireScripts
     </body>
 </html>
