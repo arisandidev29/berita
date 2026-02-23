@@ -20,6 +20,7 @@ class ImageKitService implements ImageService {
             $fileName
         );
 
+
         $user->profile_pic = $path;
         return $user->save();
     }

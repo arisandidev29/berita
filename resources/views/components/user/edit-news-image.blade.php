@@ -20,7 +20,7 @@
     @reset-image.window="resetImage()"
     class="relative">
 
-    <img x-show="imageUrl" x-cloak class="aspect-video object-cover w-full" 
+    <img x-show="imageUrl" x-cloak class="rounded-lg aspect-video object-cover w-full" 
         :src="imageUrl" alt="">
 
     {{-- input image --}}

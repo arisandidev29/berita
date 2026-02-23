@@ -5,6 +5,8 @@ use App\Service\ImageService;
 use App\Service\Impl\NewsDrafService;
 use App\Service\Impl\NewsResultService;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -17,9 +19,9 @@ new class extends Component
     public $image;
     public $deleteImage = false;
 
-     public function mount(NewsDraf $draft) {
-        $this->news = $draft;
-        $this->content = $draft->newsResult->content_generated ?? '';
+     public function mount($newsDraft) {
+        $this->news = $newsDraft;
+        $this->content = $this->news->newsResult->content_generated;
     }
 
 
@@ -42,9 +44,10 @@ new class extends Component
 
 
         $this->dispatch('disable-edit');
-        $this->dispatch('enable-success-edit-news');
-
+        $this->dispatch("updated-news");
+        $this->dispatch("activate-toast",title: "Berhasil Edit Berita");
 
     }
+
 
 };

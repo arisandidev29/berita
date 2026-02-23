@@ -16,13 +16,35 @@ class ImageKitTest extends TestCase
     /**
      * A basic feature test example.
      */
+    public function testUploadFile() {
+           Storage::disk('imagekit');
+
+        // Coba upload file dummy
+        $file = UploadedFile::fake()->image('test.jpg');
+
+        try {
+
+            $path = Storage::disk('imagekit')
+                ->put('testing/test.jpg', $file->get());
+
+            $this->assertNotFalse($path);
+
+            // Hapus lagi supaya tidak numpuk
+            Storage::disk('imagekit')->delete('testing/test.jpg');
+
+        } catch (\Exception $e) {
+
+            $this->fail('ImageKit gagal: ' . $e->getMessage());
+        }
+
+    }
+
     public function testPutFile(): void
     {
         // Storage::disk("imagekit")->put("test.txt","hai");
 
         // // $this->assertEquals("hello world",Storage::disk("imagekit")->get("test.txt"));
 
-        // $image = UploadedFile::fake()->image('hello.jpg');
 
         // $path = Storage::disk("imagekit")->putFile("testing",$image);
 
@@ -40,16 +62,16 @@ class ImageKitTest extends TestCase
         // $result = $service->uploadImageNews($fake,$news,$user);
         // dd($result);
 
-        $fullUrl = "https://ik.imagekit.io/siSpkarisandi/user/123456789/news_21/tv4AQbw9mKQybuZYK5UlGyQFl61wbcmpTAhMpogh.png";
+        // $fullUrl = "https://ik.imagekit.io/siSpkarisandi/user/123456789/news_21/tv4AQbw9mKQybuZYK5UlGyQFl61wbcmpTAhMpogh.png";
 
-        // Ambil path setelah domain
-        $path = parse_url($fullUrl, PHP_URL_PATH);
+        // // Ambil path setelah domain
+        // $path = parse_url($fullUrl, PHP_URL_PATH);
 
-        // Hapus slash di depan (/) dan hapus 'siSpkarisandi/' (URL ID Imagekit kamu)
-        $cleanPath = str_replace('/siSpkarisandi/', '', $path);
+        // // Hapus slash di depan (/) dan hapus 'siSpkarisandi/' (URL ID Imagekit kamu)
+        // $cleanPath = str_replace('/siSpkarisandi/', '', $path);
 
 
 
-        Storage::disk("imagekit")->delete($cleanPath);
+        // Storage::disk("imagekit")->delete($cleanPath);
     }
 }

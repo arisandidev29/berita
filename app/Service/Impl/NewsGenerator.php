@@ -20,6 +20,46 @@ class NewsGenerator
 
     public function generateNews(NewsDraf $draft, User $user) {
 
+            $prompt = $this->generatePrompt($draft);
+
+            $generatedContent = $this->aiService->generate($prompt);
+
+
+            $result = $this->newsResultService->create([
+                "content_generated" => Str::markdown($generatedContent)
+            ], $draft);
+
+            if($result) {
+                $draft->status = "generated";
+                $draft->save();
+            }
+
+            return $result;
+
+    }
+
+    public function updateNews(NewsDraf $draft, User $user) {
+        $prompt = $this->generatePrompt($draft);
+
+        $generateContent = $this->aiService->generate($prompt);
+
+        $data = [
+            'content_generated' => Str::markdown($generateContent)
+        ];
+
+        $result = $this->newsResultService->update($data,$draft);
+
+        if($result) {
+            $draft->status = 'generated';
+            $draft->save();
+        }
+
+        return $result;
+
+    }
+
+    protected function generatePrompt(NewsDraf $draft ) {
+
             $faktaRaw = "
             title : {$draft->title}, 
             Tokoh : {$draft->tokoh},
@@ -47,24 +87,10 @@ class NewsGenerator
 
 
             $customePrompt = "
-                akting sebagai tulis berita dengan custome prompt : {$draft['custome_prompt_text']}, dengan fakta $fakta, dan instruksi $instruksi tulis sesuai instruksi
+                akting sebagai tulis berita dengan custome prompt : {$draft->newsDrafConfig->custom_prompt_text}, dengan fakta $fakta, dan instruksi $instruksi tulis sesuai instruksi, tulis berita dengan format markdown
             ";
 
-            $generatedContent = $this->aiService->generate($draft["custome_prompt_text"] ? $prompt : $customePrompt);
-
-
-            $result = $this->newsResultService->create([
-                "content_generated" => Str::markdown($generatedContent)
-            ], $draft);
-
-            if($result) {
-                $draft->status = "generated";
-                $draft->save();
-            }
-
-            return $result;
-
-            
+            return $draft->newsDrafConfig->custom_prompt_text ? $customePrompt : $prompt;
 
     }
 
