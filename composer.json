@@ -9,6 +9,7 @@
         "php": "^8.2",
         "andreiio/blade-remix-icon": "^3.9",
         "blade-ui-kit/blade-heroicons": "^2.6",
+        "davidhsianturi/blade-bootstrap-icons": "^2.1",
         "hosseinhezami/laravel-gemini": "^1.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",

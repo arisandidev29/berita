@@ -53,6 +53,15 @@ class NewsDrafService
         return $news;
     }
 
+    public function deleteSelected(array $id,User $user) {
+        $result = $user->newsDraft()->whereIn('id',$id)->delete();
+        return $result;
+    }
+
+    public function deleteAll() {
+
+    }
+
     public function getAll(User $user)
     {
         return $user->newsDraft()->latest()->get();
