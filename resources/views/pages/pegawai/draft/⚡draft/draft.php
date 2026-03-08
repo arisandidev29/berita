@@ -41,15 +41,20 @@ new class extends Component
     public function deleteDraft(NewsDrafService $drafService, $id)
     {
 
+        
         $draft = $drafService->getById($id, auth()->user());
-
+        
         Gate::authorize('delete', $draft);
 
-        $drafService->delete($id, auth()->user());
+        try {
+            $drafService->delete($id, auth()->user());
+            $this->dispatch("activate-toast", title: "Berhasil Hapus");
+        }catch(\Exception $e) {
+            $this->dispatch("activate-toast", title: "Gagal Hapus : " .  $e->getMessage() );
+        }
 
 
         $this->dispatch("closealertwarning");
-        $this->dispatch("activate-toast", title: "Berhasil Hapus");
     }
 
     public function setDraftBack(NewsDrafService $draftService)

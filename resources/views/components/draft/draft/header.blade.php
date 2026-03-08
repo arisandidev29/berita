@@ -5,8 +5,8 @@
     </div>
 
     <div  class="flex gap-3 items-center">
-        <x-draft.search />
-        <x-draft.action />
+        <x-draft.draft..search />
+        <x-draft.draft.action />
     </div>
 
 </div>

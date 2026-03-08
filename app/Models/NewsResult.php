@@ -12,8 +12,10 @@ class NewsResult extends Model
 
     protected $fillable = [
         "news_draft_id",
-        "content_generated",
-        "is_published"
+        "title",
+        "body",
+        "is_published",
+        "slug"
     ];
 
     public function newsDraf():BelongsTo {

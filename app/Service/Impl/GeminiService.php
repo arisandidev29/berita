@@ -3,6 +3,7 @@ namespace App\Service\Impl;
 
 use App\Service\AiService;
 use HosseinHezami\LaravelGemini\Facades\Gemini;
+use stdClass;
 
 class GeminiService implements AiService {
     public function generate($prompt, $model = "gemini-2.5-flash-lite")
@@ -16,8 +17,11 @@ class GeminiService implements AiService {
     }
 
     public function generateFaker($prompt,$model = "default") {
-        $generate = fake()->paragraph(10);
-        return $generate;
+        $data = collect([
+            "title" => fake()->word(10),
+            "body" => fake()->paragraph(20)
+        ]);
+        return $data;
     }
         
 }

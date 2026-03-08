@@ -184,7 +184,7 @@
 
     {{-- loading generate --}}
 
-    <div wire:loading wire:target='regenerate'
+    <div wire:loading wire:target='regenerate,generate'
         class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
         <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
             <div class="loader"></div>

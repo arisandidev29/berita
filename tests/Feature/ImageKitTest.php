@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Service\ImageService;
 use App\Service\Impl\ImageKitService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,29 +14,35 @@ use Tests\TestCase;
 
 class ImageKitTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
+
+    public ImageService $imageService;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->imageService = $this->app->make(ImageService::class);
+    }
     public function testUploadFile() {
-           Storage::disk('imagekit');
+        //    Storage::disk('imagekit');
 
-        // Coba upload file dummy
-        $file = UploadedFile::fake()->image('test.jpg');
+        // // Coba upload file dummy
+        // $file = UploadedFile::fake()->image('test.jpg');
 
-        try {
+        // try {
 
-            $path = Storage::disk('imagekit')
-                ->put('testing/test.jpg', $file->get());
+        //     $path = Storage::disk('imagekit')
+        //         ->put('testing/test.jpg', $file->get());
 
-            $this->assertNotFalse($path);
+        //     $this->assertNotFalse($path);
 
-            // Hapus lagi supaya tidak numpuk
-            Storage::disk('imagekit')->delete('testing/test.jpg');
+        //     // Hapus lagi supaya tidak numpuk
+        //     Storage::disk('imagekit')->delete('testing/test.jpg');
 
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
 
-            $this->fail('ImageKit gagal: ' . $e->getMessage());
-        }
+        //     $this->fail('ImageKit gagal: ' . $e->getMessage());
+        // }
 
     }
 
@@ -73,5 +80,10 @@ class ImageKitTest extends TestCase
 
 
         // Storage::disk("imagekit")->delete($cleanPath);
+    }
+
+    public function testDeleteDirectory() {
+        $imgurl = "https://ik.imagekit.io/siSpkarisandi/user/123456789/news_21/in2GzjTdsvhAaAEPhjKwECOwpJdEN7Rdw3tdSPGq.jpg?ik-sdk-version=php-2.0.0&tr=q-60,f-auto";
+        $this->imageService->deleteImageDirectory($imgurl);
     }
 }

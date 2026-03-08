@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('news_result', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('news_draft_id')->unique();
-            $table->text('content_generated');
+            $table->string('title');
+            $table->text("body");
             $table->boolean('is_published')->default(false);
             $table->timestamps();
 

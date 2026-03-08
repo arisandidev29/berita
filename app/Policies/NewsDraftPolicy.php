@@ -16,4 +16,11 @@ class NewsDraftPolicy
         return $user->id == $newsDraf->user_id;
     }
 
+    public function update(User $user, NewsDraf $newsDraf): bool
+    {
+        return $user->id == $newsDraf->user_id;
+    }
+
+
+
 }

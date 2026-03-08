@@ -23,4 +23,8 @@ Route::prefix("/pegawai")
             Route::livewire("/create/draft","pages::pegawai.draft.create")->name("create.draft");
             Route::livewire("/edit/draft/{draft}","pages::pegawai.draft.update")->name("update.draft");
 
+            // news route
+            Route::livewire("/berita","pages::pegawai.berita.index")->name("pegawai.berita");
+            Route::livewire("/berita/{news:slug}","pages::pegawai.berita.show")->name("pegawai.berita.show");
+            Route::livewire("/berita/{news:slug}/edit","pages::pegawai.berita.edit")->name("pegawai.berita.edit");
 });

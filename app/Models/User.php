@@ -57,4 +57,15 @@ class User extends Authenticatable
         return $this->hasMany(NewsDraf::class);
     }
 
+    public function publishedResult() {
+        return $this->hasManyThrough(
+            NewsResult::class,
+            NewsDraf::class,
+            "user_id",
+            "news_draft_id",
+            "id",
+            "id"
+        );
+    }
+
 }

@@ -71,7 +71,7 @@
                         <img :src="imageUrl" class="rounded-lg max-w-xs shadow-md border" />
 
                         <button type="button"
-                            @click="imageUrl = null; $el.closest('fieldset').querySelector('input').value = ''; $wire.image = null"
+                            @click="imageUrl = null; $el.closest('fieldset').querySelector('input').value = ''; $wire.image = null, $wire.delete_image = true"
                             class="btn btn-xs btn-error mt-2">
                             Hapus
                         </button>

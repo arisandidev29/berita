@@ -55,6 +55,8 @@ new class extends Component
 
     public $existImage;
 
+    public $delete_image = false;
+
 
     public function mount(NewsDraf $draft)
     {
@@ -112,7 +114,8 @@ new class extends Component
             $draft,
             $this->draft, 
             $data['image'],
-             $user);
+             $user,
+            $this->delete_image);
 
 
         $newsConfigService->update($config, $newsDraft);

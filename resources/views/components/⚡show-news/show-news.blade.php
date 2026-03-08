@@ -2,7 +2,7 @@
 
 
 
- <div x-data="{ isEditable: false }" @enable-edit.window="isEditable = true" @disable-edit.window="isEditable = false" ">
+ <div x-data="{ isEditable: false}" @enable-edit.window="isEditable = true" @disable-edit.window="isEditable = false" ">
 
     {{-- alert  --}}
 
@@ -20,7 +20,7 @@
          </div>
 
 
-         <button x-show="!isEditable" x-cloak class="btn bg-main-primary text-white flex gap-2">
+         <button wire:click='publishNews' x-show="!isEditable" x-cloak class="btn bg-main-primary text-white flex gap-2">
              Publish
              <x-heroicon-o-globe-alt class="w-5 text-inherit" />
          </button>
@@ -46,13 +46,25 @@
              <div  x-show="isEditable" x-cloak x-data="{ value: @entangle('content') }" @trix-change="
                     value = $event.target.value;
                     " class="prose">
-                 <input type="hidden" id="trix" name="trix" value="{{ $content }}">
-                 <trix-editor input="trix">
 
-                 </trix-editor>
+                {{-- title --}}
+                <label class="my-4 block">
+                    <span class="text-lg font-bold mb-1">Judul Berita</span>
+                    <input type="text" wire:model='title' class="border-neutral-400 border-1 px-2 py-1 text-xl font-bold rounded-md">
+                </label>
+                
+                {{-- content --}}
+                <div>
+                    <span class="text-lg font-bold mb-1">Isi Berita</span>
+                    <input type="hidden" id="trix" name="trix" value="{{ $content }}">
+                    <trix-editor input="trix">
+                        
+                    </trix-editor>
+                </div>
              </div>
 
-             <div x-show="!isEditable" x-cloak class="prose">
+             <div x-show="!isEditable" x-cloak class=" prose lg:prose-xl">
+                <h1>{!! $title !!}</h1>
                  {!! $content !!} 
              </div>
 

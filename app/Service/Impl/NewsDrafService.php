@@ -5,14 +5,19 @@ namespace App\Service\Impl;
 use App\Models\NewsDraf;
 use App\Models\User;
 use App\Service\ImageService;
+use ErrorException;
+use Exception;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class NewsDrafService
 {
 
     protected ImageService $imageService;
-    public function __construct( ImageService $imageService) {
+    public function __construct(ImageService $imageService)
+    {
         $this->imageService = $imageService;
     }
 
@@ -26,41 +31,54 @@ class NewsDrafService
         }
         return $news;
     }
-    
-    public function update(array $data, $draft ,?UploadedFile $image, User $user)
+
+    public function update(array $data, $draft, ?UploadedFile $image, User $user, $deleteImage = false)
     {
         $draft->update($data);
-        // dd(strtok($draft->image,'?'));
 
-        if($draft->image) {
-            $this->imageService->deleteImageNews(strtok($draft->image,"?"));
+        // delete current image
+        if (($deleteImage || $image ) && $draft->image) {
+            $this->imageService->deleteImageNews($draft->image);
+            $draft->image = null;
+            $draft->save();
         }
 
+
+        // upload new image
         if ($image) {
             $path =  $this->imageService->uploadImageNews($image, $draft, $user);
             $draft->image = $path;
             $draft->save();
         }
 
-
         return $draft;
     }
 
     public function delete($id, User $user)
     {
+        return DB::transaction(function () use ($id,$user) {
+            $draft = $user->newsDraft()->findOrFail($id);
+            $imagePath = $draft->image;
 
-        $news =  $user->newsDraft()->findOrFail($id)->delete();
-        return $news;
+            $draft->delete();
+
+            return $draft;
+
+        });
     }
 
-    public function deleteSelected(array $id,User $user) {
-        $result = $user->newsDraft()->whereIn('id',$id)->delete();
-        return $result;
+    public function deleteSelected(array $id, User $user)
+    {
+        return DB::transaction(function () use ($id,$user) {
+            $drafts = $user->newsDraft()->whereIn('id', $id)->get();
+            foreach($drafts as $draft) {
+                $draft->delete();
+            }            
+
+        });
     }
 
-    public function deleteAll() {
-
-    }
+    public function deleteAll() {}
 
     public function getAll(User $user)
     {
@@ -75,5 +93,19 @@ class NewsDrafService
     public function searchByTitle(string $title, User $user)
     {
         return $user->newsDraft()->where("title", "like", "%$title%")->get();
+    }
+
+    public function setPublish(NewsDraf $draft)
+    {
+        return $draft->update([
+            "status" => "publish",
+        ]);
+    }
+
+    public function makeSlug($title)
+    {
+        $string = $title . " " . now()->timestamp;
+        $slug = Str::slug($string);
+        return $slug;
     }
 }

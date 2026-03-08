@@ -17,6 +17,8 @@ interface ImageService {
 
     function deleteImageNews($imageUrl);
 
+    function deleteImageDirectory($imageUrl);
+
     // function changeImageNews($image,$newsDraft);
     
     // function getImageNews($newsDraft);

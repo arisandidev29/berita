@@ -4,7 +4,7 @@
 
             <a wire:navigate href="{{ route("pegawai.draft") }}" ><button class="border-1 border-main-light-primary  px-4 py-2 rounded-sm text-main-light-primary hover:text-white  hover:bg-main-light-primary cursor-pointer hover:duration-300 transition-all duration-300">Draft</button></a>
 
-            <a href=""><button class="border-1 border-main-light-primary  px-4 py-2 rounded-sm text-main-light-primary hover:text-white  hover:bg-main-light-primary cursor-pointer hover:duration-300 transition-all duration-300">Berita</button></a>
+            <a wire:navigate href="{{ route("pegawai.berita") }}"><button class="border-1 border-main-light-primary  px-4 py-2 rounded-sm text-main-light-primary hover:text-white  hover:bg-main-light-primary cursor-pointer hover:duration-300 transition-all duration-300">Berita</button></a>
             
             <a wire:navigate href="{{ route("create.draft") }}"><button class="btn bg-main-primary text-white ">Buat Berita</button></a>
 
