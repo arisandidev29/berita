@@ -33,17 +33,29 @@ new class extends Component
             "body" => $this->body
         ];
 
-        $newsResultService->update($data,$this->news->newsDraf);
+        try {
 
-        if($this->image) {
-            $newsDrafService->update([],$this->news->newsDraf,$this->image,Auth::user());
-        };
-        
-        if($this->deleteImage) {
-            $newsDrafService->update([],$this->news->newsDraf,null,Auth::user(),true);
+            $newsResultService->update($data,$this->news->newsDraf);
+            
+            if($this->image) {
+                $newsDrafService->update([],$this->news->newsDraf,$this->image,Auth::user());
+            };
+            
+            if($this->deleteImage) {
+                $newsDrafService->update([],$this->news->newsDraf,null,Auth::user(),true);
+                
+                $this->news->fresh();
+            }
 
-            $this->news->fresh();
+            session()->flash('status',"berhasil edit Berita");
+            $this->redirectRoute("pegawai.berita.show",$this->news,true);
+            
+            
+        }catch(Exception $e) {
+            $this->dispatch("activete-toast",title : "gagal edit Berita : " .  $e->getMessage());
+
         }
+
 
 
 

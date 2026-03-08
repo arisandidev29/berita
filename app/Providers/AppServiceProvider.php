@@ -34,7 +34,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(NewsDrafService::class, function($app){ 
             return new NewsDrafService($app->make(ImageService::class));
         });
-        $this->app->singleton(NewsResultService::class, fn() => new NewsResultService());
+        $this->app->singleton(NewsResultService::class, function(Application $app) {
+            return new NewsResultService(
+                $app->make(NewsDrafService::class)
+            );
+        });
 
         $this->app->singleton(NewsGenerator::class, function (Application $app) {
             return new NewsGenerator(

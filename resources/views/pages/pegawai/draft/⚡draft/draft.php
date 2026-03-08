@@ -28,6 +28,7 @@ new class extends Component
 
     public function deleteSelected(NewsDrafService $newsDrafService)
     {
+
         $result = $newsDrafService->deleteSelected($this->selectedDraft, auth()->user());
         $this->dispatch("activate-toast", title: "Berhasil Hapus");
     }

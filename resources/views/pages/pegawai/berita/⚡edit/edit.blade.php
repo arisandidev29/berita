@@ -9,18 +9,20 @@
 
         <div>
             <div x-cloak x-show="imageUrl" class="relative">
-                <img   :src="imageUrl" alt="news image"
-                    class="w-full aspect-video object-cover rounded-sm">
+                <img :src="imageUrl" alt="news image" class="w-full aspect-video object-cover rounded-sm">
                 @can('update', $news)
                     <div class="absolute flex gap-3 items-center top-5 right-5">
                         <button @click="deleteImage($wire)" class="btn bg-red-500 text-white">Hapus Gambar</button>
-                        <button @click="$refs.inputImage.click()" class="btn bg-main-primary text-white">Ganti Gambar</button>
+                        <button @click="$refs.inputImage.click()" class="btn bg-main-primary text-white">Ganti
+                            Gambar</button>
                     </div>
                 @endcan
             </div>
-            <div x-show="!imageUrl" x-show class="border-gray-500 border p-4 grid place-content-center rounded-md items-center" >
-                <input type="file" x-ref="inputImage" wire:model="image" @change="changeImage($event.target.files[0])"  class="hidden" >
-                 <x-heroicon-m-cloud-arrow-up class="w-20 mx-auto" />
+            <div x-show="!imageUrl" x-show
+                class="border-gray-500 border p-4 grid place-content-center rounded-md items-center">
+                <input type="file" x-ref="inputImage" wire:model="image"
+                    @change="changeImage($event.target.files[0])" class="hidden">
+                <x-heroicon-m-cloud-arrow-up class="w-20 mx-auto" />
                 <button @click="$refs.inputImage.click()" class="btn bg-main-primary text-white">Upload Gambar</button>
                 <small class="text-center mt-2 text-sm text-gray-400">*Max 2Mb</small>
             </div>
@@ -48,8 +50,7 @@
     </div>
 
 
-    <div wire:loading wire:target='save'
-        class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
+    <div wire:loading wire:target='save' class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
         <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
             <div class="loader"></div>
             <p class="text-sm mt-2">Membuat berita ...</p>
@@ -58,6 +59,10 @@
 
     </div>
 
+    {{-- toast --}}
+    <x-toast-alert>
+        <x-heroicon-m-check-circle class="w-6" />
+    </x-toast-alert>
 </div>
 
 @push('script')
@@ -72,14 +77,14 @@
                 body: @entangle('body'),
 
                 changeImage(image) {
-                    if(image) {
+                    if (image) {
                         this.imageUrl = window.URL.createObjectURL(image)
                     }
                 },
-                deleteImage(wire){
+                deleteImage(wire) {
                     this.imageUrl = "";
-                    wire.set("image","");
-                    wire.set("deleteImage",true);
+                    wire.set("image", "");
+                    wire.set("deleteImage", true);
                 }
             }
         }

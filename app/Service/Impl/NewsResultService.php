@@ -4,9 +4,12 @@ namespace App\Service\Impl;
 use App\Models\NewsDraf;
 use App\Models\NewsResult;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class NewsResultService {
+
+    public function __construct(public NewsDrafService $newsDrafService) {}
     public function create($data,NewsDraf $newsDraf) {
         return $newsDraf->newsResult()->create($data);
     }
@@ -15,7 +18,7 @@ class NewsResultService {
     }
     public function delete($id,NewsResult $newsResult) {
         $news = $newsResult->find($id);
-        $result = $news->newsDraf()->delete();
+        $result = $this->newsDrafService->delete($news->newsDraf->id,Auth::user());
         return $result;
     }
 

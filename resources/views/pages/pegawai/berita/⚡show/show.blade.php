@@ -1,19 +1,20 @@
 <div x-data="news">
     <x-user.navbar />
-    
+
     <div class="container-max my-6 ">
         @can('update', $news)
             {{-- toast --}}
             <x-toast-alert />
 
-            @if(session()->has('status'))
-               <div x-data x-init="$dispatch('activate-toast',{title : '{{ session()->get('status') }}'})"></div> 
+            @if (session()->has('status'))
+                <div x-data x-init="$dispatch('activate-toast', { title: '{{ session()->get('status') }}' })"></div>
             @endif
 
 
             {{-- action button --}}
-            <div >
-                <a wire:navigate href="{{ route("pegawai.berita.edit",$news) }}"><button class="btn bg-main-primary text-white my-1">Edit Berita</button></a>
+            <div>
+                <a wire:navigate href="{{ route('pegawai.berita.edit', $news) }}"><button
+                        class="btn bg-main-primary text-white my-1">Edit Berita</button></a>
 
                 <button @click="openDelete({{ $news->id }})" class="btn bg-red-500 text-white my-1">Hapus Berita</button>
 
@@ -42,6 +43,14 @@
             <x-berita.show.berita-lainya-widget />
         </div>
     </div>
+
+    {{-- loading --}}
+    <div wire:loading wire:target='deleteNews' class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
+        <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
+            <div class="loader"></div>
+            <p class="text-sm mt-2">Menghapus berita ...</p>
+        </div>
+    </div>
 </div>
 
 
@@ -52,20 +61,18 @@
 
                 newsId: '',
                 showDelete: false,
-                
+
                 openDelete(id) {
-                    this.newsId= id;
+                    this.newsId = id;
                     this.showDelete = true;
                 },
-                
+
                 closeDelete() {
                     this.showDelete = false;
                 },
-                
+
             }
 
         }
-
     </script>
 @endpush
-
