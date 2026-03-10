@@ -53,7 +53,7 @@ new class extends Component
         $this->newsData = $this->getData($newsResultService->getUserNewsByYears(Auth::user()));
         $this->draftData = $this->getData($newsDrafService->getUserDraftByYears(Auth::user()));
 
-        // dd($this->getCalenderData());
+        $this->calenderData = $this->getCalenderData();
     }
 
 
