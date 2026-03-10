@@ -56,9 +56,10 @@ new class extends Component
     public function save(NewsDrafService $newsDrafService, NewsConfigService $newsConfigService) {
         $data = $this->validate();
         
-        $this->saveNewsDraft($newsDrafService, $newsConfigService , $data);
+        $draft = $this->saveNewsDraft($newsDrafService, $newsConfigService , $data);
         
-        $this->dispatch("success-create-draft");
+        session()->flash("status","Berhasil Buat Draft Berita");
+        $this->redirectRoute("pegawai.draft.detail",$draft);
     }
     
     
@@ -68,7 +69,9 @@ new class extends Component
 
         
         $newsGenerator->generateNews($draft,Auth::user());
-        $this->dispatch("success-create-news");
+
+        session()->flash("status","Berhasil Buat Draft Berita");
+        $this->redirectRoute("pegawai.draft.detail",$draft);
 
 
 

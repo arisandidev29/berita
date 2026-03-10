@@ -85,6 +85,10 @@ class NewsDrafService
         return $user->newsDraft()->latest()->get();
     }
 
+    public function getPerPagination($paginate, User $user) {
+        return $user->newsDraft()->paginate($paginate);
+    }
+
     public function getById($id, User $user)
     {
         return $user->newsDraft()->findOrFail($id);
@@ -100,6 +104,18 @@ class NewsDrafService
         return $draft->update([
             "status" => "publish",
         ]);
+    }
+
+    public function getUserDraftByYears(User $user) {
+          $data = $user->newsDraft()->select(
+            DB::raw("count(id) as total"),
+            DB::raw("DATE_FORMAT(created_at,'%M') as month")
+        )
+            ->groupBy("month")
+            ->orderBy("month")
+            ->get()
+            ->pluck('total', 'month');
+        return $data;
     }
 
     public function makeSlug($title)

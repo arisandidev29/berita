@@ -147,6 +147,13 @@
         <x-heroicon-m-check-circle class="w-6" />
      </x-toast-alert>
 
+
+        {{-- check session flash --}}
+
+        @if (session()->has('status'))
+            <div x-data x-init="$dispatch('activate-toast', { title: '{{ session()->get('status') }}' })" class="hidden"></div>
+        @endif
+
     {{-- alert generate --}}
     <x-alert x-data="{ show: false, }" x-cloak x-show="show"
         @showalertgenerate.window="draftId = $event.detail.id;  show = true; " @closealertgenerate.window="show = false"

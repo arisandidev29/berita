@@ -4,31 +4,38 @@
     <x-toast-alert />
 
 
-    @if(session()->has("status"))
-       <div x-init="$dispatch('activate-toast', { title : '{{ session()->get("status") }}'})"></div> 
+    @if (session()->has('status'))
+        <div x-init="$dispatch('activate-toast', { title: '{{ session()->get('status') }}' })"></div>
     @endif
 
     {{-- start news here --}}
     <div class="px-8 my-6 container-max">
-        <h1 class="text-4xl font-semibold text-main-primary text-center">Berita Saya</h1>
+        <div class="flex justify-between items-center">
 
+            <div>
 
-        {{-- search --}}
-        <div class="flex gap-3 items-center mb-4 mt-6">
-            <label class="input">
-                <x-heroicon-m-magnifying-glass class="w-4 opacity-70" />
-                <input wire:model.live="search"  type="search" required placeholder="Search" />
-            </label>
-            <button wire:click='searchNews' class="btn bg-main-light-primary text-white">Search</button>
+                <h1 class="text-3xl font-semibold text-main-primary ">Berita Saya</h1>
+                <p class="text-sm text-gray-400 ">Menampilkan semua Berita </p>
+
+            </div>
+
+            {{-- search --}}
+            <div class="flex gap-3 items-center mb-4 mt-6">
+                <label class="input">
+                    <x-heroicon-m-magnifying-glass class="w-4 opacity-70" />
+                    <input wire:model.live="search" type="search" required placeholder="Search" />
+                </label>
+                <button wire:click='searchNews' class="btn bg-main-light-primary text-white">Search</button>
+            </div>
+
         </div>
-
 
         {{-- card container --}}
         <div class="grid grid-cols-2 gap-5 ">
 
             {{-- card news --}}
-            @foreach ($news as $item)
-                <a wire:navigate href="{{ route("pegawai.berita.show", $item) }}">
+            @forelse($news as $item)
+                <a wire:navigate href="{{ route('pegawai.berita.show', $item) }}">
                     <div
                         class="rounded-md border border-neutral-300 hover:border-neutral-600 hover:border-1 duration-300 transition-all">
                         <div class="overflow-hidden">
@@ -37,7 +44,7 @@
                                     class="w-full aspect-video object-cover hover:scale-150  hover:transition-all hover:grayscale-100 duration-500">
                             @else
                                 <div class="bg-slate-700 text-white w-full aspect-video grid place-content-center">
-                                   <p class="text-2xl">No Image</p> 
+                                    <p class="text-2xl">No Image</p>
                                 </div>
                             @endif
                         </div>
@@ -56,7 +63,19 @@
                         </div>
                     </div>
                 </a>
-            @endforeach
+            @empty
+                <div
+                    class="flex flex-col items-center col-span-2 mt-8 border border-gray-300 hover:border-gray-400 rounded-lg px-10 py-15">
+
+                    <p class="flex gap-2 items-center text-2xl">
+                        Belum Ada Berita Yang Di Publish
+                        <x-heroicon-s-face-smile class="w-8" />
+                    </p>
+
+                    </a>
+
+                </div>
+            @endforelse
         </div>
 
     </div>

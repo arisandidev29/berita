@@ -25,12 +25,13 @@ new class extends Component
         $newsGenerator->generateNews($this->newsDraft,Auth::user());
 
         $this->dispatch("closealertgenerate");
+        $this->dispatch("activate-toast",title: "Berhasil Generate Berita");
     }
     
     public function regenerate(NewsGenerator $newsGenerator) {
         $newsGenerator->updateNews($this->newsDraft,Auth::user());
         $this->dispatch("closealertregenerate");
-        $this->dispatch("activate-toast",title: "Berhasil Regenerate");
+        $this->dispatch("activate-toast",title: "Berhasil Regenerate Berita");
 
 
     }

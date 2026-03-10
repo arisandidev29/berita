@@ -5,6 +5,7 @@ namespace App\Service\Impl;
 use App\Models\NewsDraf;
 use App\Models\User;
 use App\Service\AiService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class NewsGenerator
@@ -23,46 +24,53 @@ class NewsGenerator
 
         $prompt = $this->generatePrompt($draft);
 
-        $generatedContent = $this->aiService->generateFaker($prompt);
+        $resultNews = $this->getResult($prompt);
 
-        // clear optional character
-          preg_match('/\{(?:[^{}]|(?R))*\}/s', $generatedContent, $matches);
+        return DB::transaction(function () use ($resultNews, $draft) {
 
-        $jsonString = $matches[0] ?? null;
-        $jsonResult = json_decode($jsonString);
+            $result = $this->newsResultService->create([
+                "title" => $resultNews->title,
+                "body" => Str::markdown($resultNews->body)
+            ], $draft);
 
+            if ($result) {
+                $draft->status = "generated";
+                $draft->save();
+            }
 
-        $result = $this->newsResultService->create([
-            "title" => $jsonResult->title,
-            "body" => Str::markdown($jsonResult->body) 
-        ], $draft);
-
-        if ($result) {
-            $draft->status = "generated";
-            $draft->save();
-        }
-
-        return $result;
+            return $result;
+        });
     }
 
     public function updateNews(NewsDraf $draft, User $user)
     {
         $prompt = $this->generatePrompt($draft);
 
-        $generateContent = $this->aiService->generate($prompt);
+        $resultNews = $this->getResult($prompt);
 
-        $data = [
-            'content_generated' => Str::markdown($generateContent)
-        ];
+        return DB::transaction(function () use ($resultNews, $draft) {
 
-        $result = $this->newsResultService->update($data, $draft);
+            $data = [
+                "title" => $resultNews->title,
+                "body" => Str::markdown($resultNews->body)
+            ];
 
-        if ($result) {
-            $draft->status = 'generated';
-            $draft->save();
-        }
+            $result = $this->newsResultService->update($data, $draft);
 
-        return $result;
+            return $result;
+        });
+    }
+
+    protected function getResult($prompt)
+    {
+        $generatedContent = $this->aiService->generateFaker($prompt);
+
+        // clear optional character
+        preg_match('/\{(?:[^{}]|(?R))*\}/s', $generatedContent, $matches);
+
+        $jsonString = $matches[0] ?? null;
+        $jsonResult = json_decode($jsonString);
+        return $jsonResult;
     }
 
     protected function generatePrompt(NewsDraf $draft)
