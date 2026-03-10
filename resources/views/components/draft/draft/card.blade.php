@@ -31,8 +31,8 @@
             </p>
         </div>
         <div class="my-2">
-            <h3 class="font-semibold text-lg">{{ $draft->title }}</h3>
-            <div class="text-sm flex flex-col gap-2">
+            <h3 class="font-semibold text-md md:text-lg my-2">{{ $draft->title }}</h3>
+            <div class=" text-xs md:text-sm flex flex-col gap-2">
 
                 <p class="flex gap-2 items-center">
                     <span class="bg-green-500 px-1 py-0.5 rounded-sm text-white flex gap-1">

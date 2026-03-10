@@ -36,6 +36,10 @@
     .container-max {
         @apply max-w-[1200px] lg:mx-auto lg:w-[80%] mx-4;
     }
+
+    .btn {
+        @apply text-xs! md:text-sm!;
+    }
 }
 
 input[type="text"],
