@@ -1,6 +1,6 @@
 <div x-data="draftData" @deactive-selected.window="deactivateSelected()" class="relative">
     <x-user.navbar />
-    <div class="container-max  my-4 p-8 ">
+    <div class="container-max  my-4 p-4 md:p-8 ">
         {{-- header --}}
         <x-draft.draft.header />
 

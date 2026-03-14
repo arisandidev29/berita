@@ -6,7 +6,7 @@
         show = false
     }, {{ $showTiming }})
 })" x-on:activate-toast.window='show = true; title = $event.detail.title; type : $event.detail.type' class="toast toast-top toast-end top-20 z-[200]" >
-    <div {{ $attributes->merge(['class' => "alert alert-success text-white text-xl flex gap-1 items-center"]) }}>
+    <div {{ $attributes->merge(['class' => "alert alert-success text-white text-xs md:text-xl flex gap-1 items-center"]) }}>
         <span x-text="title"></span>
         {{ $slot }}
     </div>

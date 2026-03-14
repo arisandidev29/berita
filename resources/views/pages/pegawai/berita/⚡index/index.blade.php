@@ -10,10 +10,9 @@
 
     {{-- start news here --}}
     <div class="px-8 my-6 container-max">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col md:flex-row justify-between items-center">
 
             <div>
-
                 <h1 class="text-3xl font-semibold text-main-primary ">Berita Saya</h1>
                 <p class="text-sm text-gray-400 ">Menampilkan semua Berita </p>
 
@@ -31,7 +30,7 @@
         </div>
 
         {{-- card container --}}
-        <div class="grid grid-cols-2 gap-5 ">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-5 ">
 
             {{-- card news --}}
             @forelse($news as $item)

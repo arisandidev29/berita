@@ -8,7 +8,7 @@
             class="absolute -right-2 -top-2 checkbox checkbox-md bg-white checked:bg-main-primary checked:text-white">
     </div>
 
-    <div class="border-1 border-neutral-300 rounded-xl p-4 overflow-hidden">
+    <div class="border-1 border-neutral-300 rounded-xl p-2 md:p-4 overflow-hidden">
         <div class="group overflow-hidden">
 
             @if ($draft->image)
@@ -56,10 +56,10 @@
                 </p>
 
             </div>
-            <div x-show="!activeSelect" x-cloak class="flex gap-2 items-center mt-3">
+            <div x-show="!activeSelect" x-cloak class="flex gap-2 items-center mt-3 ">
                 <a wire:navigate href="{{ route('pegawai.draft.detail', $draft) }}">
-                    <button class="btn bg-main-primary hover:bg-main-dark-primary text-white ">Detail
-                        >></button>
+                    <button class="btn bg-main-primary hover:bg-main-dark-primary text-white   ">Detail
+                        </button>
 
                 </a>
 
@@ -72,7 +72,6 @@
 
                 <button @click="$dispatch('showalertwarning',{'id' : {{ $draft->id }}})"
                     class="btn bg-red-500 hover:bg-red-600 text-white">
-                    Delete
                     <x-heroicon-s-trash class="w-4 text-inherit" />
                 </button>
 

@@ -10,24 +10,24 @@
         <p class="text-2xl text-white">No Image</p>
     </div>
     @endif
-    <div class="my-2">
-        <h1 class="text-3xl font-bold my-2  ">{{ $news->title }}</h1>
+    <div class=" my-5 md:my-2 px-2">
+        <h1 class="text-xl md:text-3xl font-bold my-2  ">{{ $news->title }}</h1>
         <div class="my-4 flex items-center gap-8">
 
-            <span class="flex gap-2 items-center">
-                <x-heroicon-o-user class="w-6" />
+            <span class="flex gap-2 items-center text-xs md:text-md">
+                <x-heroicon-o-user class="w-4 md:w-6" />
                 {{ auth()->user()->pegawai->nama }}
             </span>
 
-            <span class="flex gap-2 items-center">
-                <x-heroicon-c-calendar-date-range class="w-6" />
+            <span class="flex gap-2 items-center text-xs md:text-md">
+                <x-heroicon-c-calendar-date-range class="w-4 md:w-6" />
                 {{ $news->created_at }}
 
             </span>
         </div>
     </div>
 
-    <div class="prose lg:prose-xl">
+    <div class="px-2 text-sm  prose lg:prose-xl">
         {!! $news->body !!}
     </div>
 </div>

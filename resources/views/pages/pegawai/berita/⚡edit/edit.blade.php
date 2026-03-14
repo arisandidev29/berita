@@ -1,7 +1,7 @@
 <div x-data="news">
     <x-user.navbar />
 
-    <div class="container-max my-4 ">
+    <div class="container-max my-4 px-2 ">
 
         <div class="flex justify-end my-4">
             <button wire:click='save' class="btn bg-main-primary text-white">Simpan</button>

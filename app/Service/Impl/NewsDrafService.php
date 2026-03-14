@@ -82,11 +82,11 @@ class NewsDrafService
 
     public function getAll(User $user)
     {
-        return $user->newsDraft()->latest()->get();
+        return $user->newsDraft()->where("status","<>","publish")->latest()->get();
     }
 
     public function getPerPagination($paginate, User $user) {
-        return $user->newsDraft()->paginate($paginate);
+        return $user->newsDraft()->where("status","<>","publish")->paginate($paginate);
     }
 
     public function getById($id, User $user)

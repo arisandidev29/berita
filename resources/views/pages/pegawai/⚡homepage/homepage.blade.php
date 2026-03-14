@@ -3,7 +3,7 @@
 
     <x-homepage-hero :totalDraft="$totalDraft" :totalNews="$totalNews" />
 
-    <div class="my-2 p-4 w-[80%] mx-auto ">
+    <div class="my-2 p-4 md:w-[80%] mx-auto ">
         <div class="grid gap-4 grid-cols-1 lg:grid-cols-[70%_1fr]">
 
             {{-- chart --}}
@@ -19,20 +19,33 @@
 
                 {{-- draft --}}
                 <div class="my-8">
-                    <h2 class="text-main-primary text-2xl  my-5">Draft Berita</h2>
-                    <ul class="grid gap-4 grid-cols-4 items-stretch">
-                        @forelse($this->drafts as $draft)
-                            <li>
-                                <a href="{{ route('pegawai.draft.detail', $draft) }}">
-                                    <div
-                                        class="bg-main-light-primary text-white min-h-20 max-h-20 flex gap-2 items-center justify-center border border-gray-400 rounded-lg p-1 text-center hover:shadow-xl  hover:shadow-main-primary transition-all duration-300">
-                                        <h3 class="text-sm">{{ Str::limit($draft->title, '20', '...') }}</h3>
-                                    </div>
-                                </a>
-                            </li>
-                        @empty
-                        @endforelse
-                    </ul>
+                    <div class="overflow-x-auto shadow-xl p-5 rounded-md">
+                        <h2 class="text-lg font-semibold my-3">Draft Terbaru</h2>
+                        <table class="table">
+                            <!-- head -->
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>DiBuat</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($this->drafts as $index => $draft)
+                                    <tr>
+                                        <td>{{Str::limit( $draft->title,"35","...") }}</td>
+                                        <td>{{ $draft->created_at }}</td>
+                                        <td>
+                                            <a wire:navigate  href="{{ route("pegawai.draft.detail",$draft) }}"><button
+                                                    class="btn btn-sm bg-main-primary text-white">Detail</button></a>
+                                        </td>
+                                    </tr>
+
+                                @empty
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

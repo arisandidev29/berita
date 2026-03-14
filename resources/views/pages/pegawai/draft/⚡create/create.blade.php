@@ -1,7 +1,7 @@
 <div>
     <x-user.navbar />
 
-    <div class="container-max my-6">
+    <div class="container-max my-6 px-4">
         <h2 class="text-2xl text-main-primary ">Buat Draft Berita</h2>
 
 
@@ -25,9 +25,9 @@
             <span>Berhasil Buat berita</span>
         </div>
 
-        <div class="my-4 grid lg:grid-cols-4 md:grid-cols-1 gap-3">
+        <div class="my-4 block md:grid lg:grid-cols-4 md:grid-cols-1 gap-3">
 
-            <div class="lg:col-start-1 lg:col-span-3 grid grid-cols-2 gap-3">
+            <div class="lg:col-start-1 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-3">
 
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">Title</legend>
@@ -118,8 +118,8 @@
                 <div class="collapse-content text-sm ">
                     <p class="my-4">Gunakan Mode tingkat lanjut dengan hati hati, pastikan sudah membaca dan input
                         dengan benar</p>
-                    <div class="grid lg:grid-cols-2 gap-4 ">
-                        <fieldset class="fieldset">
+                    <div class="block lg:grid lg:grid-cols-2 gap-4 ">
+                        <fieldset class="fieldset ">
                             <legend class="fieldset-legend">Tone Style</legend>
                             <select wire:model='tone_style' class="select w-full">
                                 <option selected>Informative</option>
@@ -171,7 +171,7 @@
 
 
 
-            <div class="flex gap-4">
+            <div class="flex gap-4 my-3">
                 <button wire:click='save' class="btn bg-main-light-primary text-white">Simpan Draft</button>
                 <button @click="$dispatch('showalertgenerate')" class="btn bg-blue-500 text-white">
                     Simpan dan Generate
@@ -200,7 +200,7 @@
                 class="fixed inset-0 h-screen bg-[rgba(0,0,0,.7)] grid place-content-center">
                 <div class="bg-white w-64 h-32 rounded-xl p-4 mx-auto flex justify-center items-center gap-2 flex-col">
                     <div class="loader"></div>
-                    <p class="text-sm mt-2">Menyimpan Dratf ...</p>
+                    <p class="text-sm mt-2">Menyimpan Draft ...</p>
                 </div>
 
             </div>
